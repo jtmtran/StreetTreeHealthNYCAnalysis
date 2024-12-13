@@ -70,7 +70,7 @@ on t.spc_common = ts.spc_common
 group by t.spc_common, t.health
 order by t.spc_common, t.health;
 ```
-![Alt text for image](https://github.com/jtmtran/Employee_Attrition_Project/blob/ab4a49ad895f67190540f3365074df58c6931282/Sales%20Department%3A%20High%20Income%2C%20Yet%20High%20Attrition.png)
+<img width="350" alt="Screenshot 2024-12-13 at 10 10 38 AM" src="https://github.com/user-attachments/assets/ac477d2f-e4e8-4a32-8544-aba7e0db9257" />
 
 Observation:
 - Callery pear and London planetree have the highest proportion of trees in “Good” health, with approximately 80-85% classified as healthy.
@@ -144,7 +144,8 @@ from trees
 group by problems
 order by avg_health;
 ```
-![Alt text for image](https://github.com/jtmtran/Employee_Attrition_Project/blob/ab4a49ad895f67190540f3365074df58c6931282/Sales%20Department%3A%20High%20Income%2C%20Yet%20High%20Attrition.png)
+
+<img width="350" alt="Screenshot 2024-12-12 at 6 30 22 PM" src="https://github.com/user-attachments/assets/20289b1f-eca3-4db7-9d13-0ab32da34467" />
 
 - Unexpected Results:
 Trees with persistent root problems seem to have a higher average health score than those with resolved root problems. This is counterintuitive since resolving root problems is expected to improve tree health.
