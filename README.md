@@ -117,20 +117,20 @@ order by avg_health;
 ```
 <img width="188" alt="Screenshot 2024-12-12 at 6 30 22 PM" src="https://github.com/user-attachments/assets/f6745f6a-4811-48fe-a757-39816939317a" />
 
-1. Unexpected Results:
-- Trees with persistent root problems seem to have a higher average health score than those with resolved root problems. This is counterintuitive since resolving root problems is expected to improve tree health.
+- Unexpected Results:
+Trees with persistent root problems seem to have a higher average health score than those with resolved root problems. This is counterintuitive since resolving root problems is expected to improve tree health.
 
-2. Potential Explanations:
+- Potential Explanations:
    
 	1. Data Quality Issues:
-- There might be inconsistencies in how health and root problem data were recorded.
-- For instance, trees marked as having “No” root problems might have been recently resolved but still exhibit lingering health issues.
+There might be inconsistencies in how health and root problem data were recorded.
+For instance, trees marked as having “No” root problems might have been recently resolved but still exhibit lingering health issues.
 
 	2. Selection Bias:
-- The dataset might have a disproportionately large number of trees classified as “Resolved” but still recovering from past issues, lowering their average health score.
+The dataset might have a disproportionately large number of trees classified as “Resolved” but still recovering from past issues, lowering their average health score.
 
 	3. Confounding Factors:
-- Other factors not accounted for in this query (e.g., soil quality, species, maintenance level) might be affecting tree health independently of root problems.
+Other factors not accounted for in this query (e.g., soil quality, species, maintenance level) might be affecting tree health independently of root problems.
 
 ### Visualizations
 ![Tree Health by Guard Type](path/to/image.png)
