@@ -49,40 +49,69 @@ The analysis leverages the 2015 NYC Street Tree Census dataset, provided by the 
 
 ### Root Causes: What Makes Urban Trees Thrive or Fail in New York City?
 <br>**1. Which Tree Species Are Thriving in NYC?**
-<br>•	Attrition rate in HR is 45.45% for employees with job satisfaction = 1, despite reasonable income levels.
+<br>Investigate the distribution of tree health (Good, Fair, Poor) among the top 5 most common tree species (spc_common)
 ```sql
+with top_species as(
+	select 
+		spc_common,
+		count(*) as total_tree_count
+	from trees
+    group by spc_common
+    order by total_tree_count desc
+    limit 5)
 
+select
+	t.spc_common,
+	t.health,
+    count(*) as health_count
+from trees t
+join top_species ts
+on t.spc_common = ts.spc_common
+group by t.spc_common, t.health
+order by t.spc_common, t.health;
 ```
+![Alt text for image](https://github.com/jtmtran/Employee_Attrition_Project/blob/ab4a49ad895f67190540f3365074df58c6931282/Sales%20Department%3A%20High%20Income%2C%20Yet%20High%20Attrition.png)
+
+Observation:
+- Callery pear and London planetree have the highest proportion of trees in “Good” health, with approximately 80-85% classified as healthy.
+- Norway maple has the largest proportion of “Poor” health trees (~11%), suggesting it is more vulnerable compared to other species.
+- A small percentage of trees across all species fall under “Fair” health, indicating some urban stressors but manageable conditions.
+- Honeylocust stands out with only 1 “Dead” tree, highlighting its resilience or exceptional care.
 
 <br>**2. Damaged Sidewalks: A Hidden Threat to NYC Trees**
 <br>•	Attrition rate in HR is 45.45% for employees with job satisfaction = 1, despite reasonable income levels.
 ```sql
 
 ```
+![Alt text for image](https://github.com/jtmtran/Employee_Attrition_Project/blob/ab4a49ad895f67190540f3365074df58c6931282/Sales%20Department%3A%20High%20Income%2C%20Yet%20High%20Attrition.png)
 
 <br>**3. On the Edge: Are Curb Trees More Vulnerable?**
 <br>•	Attrition rate in HR is 45.45% for employees with job satisfaction = 1, despite reasonable income levels.
 ```sql
 
 ```
+![Alt text for image](https://github.com/jtmtran/Employee_Attrition_Project/blob/ab4a49ad895f67190540f3365074df58c6931282/Sales%20Department%3A%20High%20Income%2C%20Yet%20High%20Attrition.png)
 
 <br>**4. Stewardship’s Role in Tree Survival**
 <br>•	Attrition rate in HR is 45.45% for employees with job satisfaction = 1, despite reasonable income levels.
 ```sql
 
 ```
+![Alt text for image](https://github.com/jtmtran/Employee_Attrition_Project/blob/ab4a49ad895f67190540f3365074df58c6931282/Sales%20Department%3A%20High%20Income%2C%20Yet%20High%20Attrition.png)
 
 <br>**5. Cracks in the Foundation: How Sidewalk Damage Correlates with Tree Health**
 <br>•	Attrition rate in HR is 45.45% for employees with job satisfaction = 1, despite reasonable income levels.
 ```sql
 
 ```
+![Alt text for image](https://github.com/jtmtran/Employee_Attrition_Project/blob/ab4a49ad895f67190540f3365074df58c6931282/Sales%20Department%3A%20High%20Income%2C%20Yet%20High%20Attrition.png)
 
 <br>**6. Species in Distress: Identifying the Struggling Few**
 <br>•	Attrition rate in HR is 45.45% for employees with job satisfaction = 1, despite reasonable income levels.
 ```sql
 
 ```
+![Alt text for image](https://github.com/jtmtran/Employee_Attrition_Project/blob/ab4a49ad895f67190540f3365074df58c6931282/Sales%20Department%3A%20High%20Income%2C%20Yet%20High%20Attrition.png)
 
 <br>**7.  Fixing the Roots: Do Resolved Problems Lead to Healthier Trees?**
 <br>•	Comparing tree health for those with resolved (root_stone = 'No' AND root_grate = 'No') vs persistent root problems.
@@ -115,7 +144,7 @@ from trees
 group by problems
 order by avg_health;
 ```
-<img width="188" alt="Screenshot 2024-12-12 at 6 30 22 PM" src="https://github.com/user-attachments/assets/f6745f6a-4811-48fe-a757-39816939317a" />
+![Alt text for image](https://github.com/jtmtran/Employee_Attrition_Project/blob/ab4a49ad895f67190540f3365074df58c6931282/Sales%20Department%3A%20High%20Income%2C%20Yet%20High%20Attrition.png)
 
 - Unexpected Results:
 Trees with persistent root problems seem to have a higher average health score than those with resolved root problems. This is counterintuitive since resolving root problems is expected to improve tree health.
