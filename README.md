@@ -41,6 +41,23 @@ Key Questions Addressed
 - Several clusters of trees in poor health were identified, particularly in [specific neighborhoods].
 - Stewardship activities and helpful guards significantly improve tree health.
 
+### Analysis
+<br>**7. High Attrition in Human Resources with Low Job Satisfaction**
+<br>•	Attrition rate in HR is 45.45% for employees with job satisfaction = 1, despite reasonable income levels.
+```sql
+SELECT Department, COUNT(*) AS NumEmployees,
+  JobSatisfaction,
+  SUM(CASE WHEN Attrition = 'Yes' THEN 1 ELSE 0 END) AS NumAttrition,
+  (SUM(CASE WHEN Attrition = 'Yes' THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS AttritionRate,
+  AVG(MonthlyIncome) AS AvgIncome
+FROM employee_attrition
+WHERE Department = 'Human Resources'
+GROUP BY Department, JobSatisfaction
+ORDER BY AttritionRate DESC;  
+```
+![Alt text for image](https://github.com/jtmtran/Employee_Attrition_Project/blob/ab4a49ad895f67190540f3365074df58c6931282/High%20Attrition%20in%20Human%20Resources%20with%20Low%20Job%20Satisfaction.png)
+<br>•	High turnover suggests that dissatisfaction in HR is driven by factors beyond salary, such as workplace environment or lack of engagement.
+
 ### Visualizations
 ![Tree Health by Guard Type](path/to/image.png)
 
