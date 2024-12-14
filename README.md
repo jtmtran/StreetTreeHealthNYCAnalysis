@@ -212,7 +212,7 @@ Observation:
 - London Planetree and Pin Oak Perform Well: Despite high tree counts, these species maintain low poor health percentages at 2.52% and 2.32%, reflecting their relative hardiness.
 
 <br>**7.  Fixing the Roots: Do Resolved Problems Lead to Healthier Trees?**
-<br>•	Comparing tree health for those with resolved (root_stone = 'No' AND root_grate = 'No') vs persistent root problems.
+<br>Comparing tree health for those with resolved (root_stone = 'No' AND root_grate = 'No') vs persistent root problems.
 ```sql
 select 
 	case
@@ -220,24 +220,24 @@ select
         else 'Persistent'
 	end as root_problem_status,
 	avg(case 
-			when health = 'Good' then 3
-            when health = 'Fair' then 2
-            when health = 'Poor' then 1
-            when health = 'Dead' then 0
-            else Null
-            end)as avg_health
+		when health = 'Good' then 3
+		when health = 'Fair' then 2
+		when health = 'Poor' then 1
+		when health = 'Dead' then 0
+		else Null
+		end)as avg_health
 from trees
 group by root_problem_status;
 
 select 
 	problems,
 	avg(case 
-			when health = 'Good' then 3
-            when health = 'Fair' then 2
-            when health = 'Poor' then 1
-            when health = 'Dead' then 0
-            else Null
-            end)as avg_health
+		when health = 'Good' then 3
+		when health = 'Fair' then 2
+		when health = 'Poor' then 1
+		when health = 'Dead' then 0
+		else Null
+		end)as avg_health
 from trees
 group by problems
 order by avg_health;
@@ -259,6 +259,22 @@ The dataset might have a disproportionately large number of trees classified as 
 
 	3. Confounding Factors:
 Other factors not accounted for in this query (e.g., soil quality, species, maintenance level) might be affecting tree health independently of root problems.
+
+### Key Takeaways and Recommendations
+1. Species-Specific Vulnerabilities:
+<br>Certain species like Norway maple exhibit significantly higher poor health percentages (11.05%), making them a priority for targeted interventions. In contrast, resilient species like Honeylocust show lower rates (1.85%) of poor health, indicating their suitability for urban environments.
+
+2. Impact of Curb Location:
+<br>Trees on curbs face slightly higher challenges, with marginally higher mortality (4.66% Dead) and poor health (3.94% Poor) compared to those offset from curbs. This highlights the additional stress faced by trees closer to sidewalks and streets.
+
+3. Stewardship Effectiveness:
+<br>Higher stewardship levels correlate strongly with better tree health. Trees with 4 or more stewardship activities have the highest “Good” health percentage (84.53%), demonstrating the value of active community engagement and care.
+
+4. Spatial Clusters of Poor Health:
+<br>Staten Island emerges as a key area of concern, with multiple high-density clusters of poor health trees, some with over 50% poor health rates. These clusters call for prioritized resource allocation and maintenance efforts.
+
+5. Sidewalk Damage and Tree Health:
+<br>Boroughs like Brooklyn and Bronx show the highest percentages of trees adjacent to damaged sidewalks (32.97% and 27.53%, respectively). Addressing sidewalk infrastructure could improve tree health in these areas.
 
 ### Visualizations
 ![Tree Health by Guard Type](path/to/image.png)
