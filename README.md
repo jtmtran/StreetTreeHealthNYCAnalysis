@@ -109,7 +109,7 @@ from ranked_nta
 where rank_within_borough in (1,2,3,4,5)
 order by borough, rank_within_borough;
 ```
-<img width="484" alt="Screenshot 2024-12-14 at 2 06 04 PM" src="https://github.com/user-attachments/assets/25713c03-1d75-41e7-b14f-e33a8319a582" />
+<img width="650" alt="Screenshot 2024-12-14 at 2 06 04 PM" src="https://github.com/user-attachments/assets/25713c03-1d75-41e7-b14f-e33a8319a582" />
 
 Observation:
 - Woodhaven (Brooklyn) leads all neighborhoods with a 100% “Good” health score, showcasing exceptional tree health management.
