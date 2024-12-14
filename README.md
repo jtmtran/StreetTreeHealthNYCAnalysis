@@ -79,39 +79,137 @@ Observation:
 - Honeylocust stands out with only 1 “Dead” tree, highlighting its resilience or exceptional care.
 
 <br>**2. Damaged Sidewalks: A Hidden Threat to NYC Trees**
-<br>•	Attrition rate in HR is 45.45% for employees with job satisfaction = 1, despite reasonable income levels.
+<br>Examine how many trees in each borough are adjacent to damaged sidewalks and calculate the percentage of total trees.
 ```sql
-
+select 
+    borough, 
+    count(*) as total_trees,
+    sum(case when sidewalk = 'Damage' then 1 else 0 end) as damaged_sidewalk_count,
+    (sum(case when sidewalk = 'Damage' then 1 else 0 end) * 100.0 / count(*)) as damaged_sidewalk_pct
+from trees
+group by borough
+order by damaged_sidewalk_pct desc;
 ```
-![Alt text for image](https://github.com/jtmtran/Employee_Attrition_Project/blob/ab4a49ad895f67190540f3365074df58c6931282/Sales%20Department%3A%20High%20Income%2C%20Yet%20High%20Attrition.png)
+<img width="600" alt="Screenshot 2024-12-13 at 11 16 29 PM" src="https://github.com/user-attachments/assets/0062e571-e476-42f3-b707-06890b23be4d" />
+
+Observation:
+- Brooklyn has the highest percentage of trees adjacent to damaged sidewalks at 32.97%, accounting for nearly one-third of its total trees, indicates a significant issue with sidewalk maintenance in Brooklyn compared to other boroughs.
+- Staten Island (22.10%) and Manhattan (22.97%) have the lowest percentages of damaged sidewalks relative to their total trees, indicate better sidewalk maintenance or fewer environmental stressors affecting sidewalks in these boroughs.
+- Queens has the highest number of total trees (250,551) but a lower sidewalk damage percentage (26.73%) compared to Brooklyn. Despite having a higher tree count, Queens manages to maintain a moderate level of sidewalk damage.
+- The Bronx has a relatively high percentage of damaged sidewalks (27.53%), suggesting a need for targeted maintenance efforts in this borough.
 
 <br>**3. On the Edge: Are Curb Trees More Vulnerable?**
-<br>•	Attrition rate in HR is 45.45% for employees with job satisfaction = 1, despite reasonable income levels.
+<br>Compare the health of trees (Good, Fair, Poor) based on curb location (OnCurb vs OffsetFromCurb).
 ```sql
+with tree_health as(
+select
+	curb_loc,
+	sum(case when health = 'Good' then 1 else 0 end) as good_health,
+    sum(case when health = 'Fair' then 1 else 0 end) as fair_health,
+    sum(case when health = 'Poor' then 1 else 0 end) as poor_health,
+    sum(case when health = 'Dead' then 1 else 0 end) as dead_health,
+    count(*) as total_trees
+from trees
+group by curb_loc)
 
+select
+	curb_loc,
+	good_health,
+    fair_health,
+    poor_health,
+    dead_health,
+    round((good_health*100.0/total_trees),2) as good_pct,
+    round((fair_health*100.0/total_trees),2) as fair_pct,
+    round((poor_health*100.0/total_trees),2) as poor_pct,
+    round((dead_health*100.0/total_trees),2) as dead_pct
+from tree_health;
 ```
-![Alt text for image](https://github.com/jtmtran/Employee_Attrition_Project/blob/ab4a49ad895f67190540f3365074df58c6931282/Sales%20Department%3A%20High%20Income%2C%20Yet%20High%20Attrition.png)
+<img width="800" alt="Screenshot 2024-12-13 at 11 44 36 PM" src="https://github.com/user-attachments/assets/cea33790-20d1-4cce-be85-9bd1d8ba5265" />
+
+Observation:
+- Similar Health Percentages: Trees on curbs and those offset have nearly identical percentages of “Good” health (77.33% vs 77.63%), indicating comparable overall health trends.
+- Higher Mortality for OnCurb Trees: Trees on curbs have a slightly higher percentage of “Dead” trees (4.66%) compared to offset trees (3.78%).
+- Poor Health Slightly Higher OnCurb: “Poor” health trees are marginally more prevalent on curbs (3.94%) than offset (3.58%).
+- Fair Health Balanced: Trees offset from the curb show a slightly higher “Fair” health percentage (15%) compared to on-curb trees (14.08%).
 
 <br>**4. Stewardship’s Role in Tree Survival**
-<br>•	Attrition rate in HR is 45.45% for employees with job satisfaction = 1, despite reasonable income levels.
+<br>Analyze the impact of stewardship activity (steward) on tree health by calculating the percentage of trees in “Good” health for each level.
 ```sql
-
+select
+	steward,
+    sum(case when health = 'Good' then 1 else 0 end) as good_health_count,
+	sum(case when health = 'Good' then 1 else 0 end)/count(*) *100 as good_health_pct
+from trees
+group by steward
+order by good_health_pct desc;
 ```
-![Alt text for image](https://github.com/jtmtran/Employee_Attrition_Project/blob/ab4a49ad895f67190540f3365074df58c6931282/Sales%20Department%3A%20High%20Income%2C%20Yet%20High%20Attrition.png)
+<img width="400" alt="Screenshot 2024-12-13 at 11 52 51 PM" src="https://github.com/user-attachments/assets/9bcfca05-bf10-43e5-a5b2-ed8b2e14d605" />
 
-<br>**5. Cracks in the Foundation: How Sidewalk Damage Correlates with Tree Health**
-<br>•	Attrition rate in HR is 45.45% for employees with job satisfaction = 1, despite reasonable income levels.
+Observation:
+- Higher Stewardship Levels Lead to Better Health: Trees with 4orMore instances of stewardship have the highest percentage of “Good” health at 84.53%, followed by 3or4 at 81.35%.
+- No Stewardship Shows Slightly Lower Health: Trees with None recorded stewardship still maintain a high “Good” health percentage at 81.28%, suggesting baseline resilience.
+- Minimal Stewardship (1or2): Trees with minimal stewardship (1or2) show a slight dip in “Good” health at 80.37%, indicating lower care impacts health slightly.
+- Dead Stewardship Category: The Dead category has 0 trees in “Good” health, as expected.
+
+<br>**5. Mapping the Hotspots: Where Are Poor Health Trees Concentrated?**
+<br>Use latitude (latitude) and longitude (longitude) data to compare poor health trees to the total number of trees in each cluster
 ```sql
-
+with cluster_summary as (
+    select 
+		borough,
+        round(latitude, 3) as lat_cluster,
+        round(longitude, 3) as lon_cluster,
+        count(*) as total_trees,
+        sum(case when health = 'Poor' then 1 else 0 end) as poor_health_count
+    from trees
+    group by 1, 2, 3
+)
+select 
+	borough,
+    lat_cluster,
+    lon_cluster,
+    poor_health_count,
+    total_trees,
+    round((poor_health_count * 100.0) / total_trees, 2) as poor_health_pct
+from cluster_summary
+where poor_health_count > 10
+order by poor_health_pct desc;
 ```
-![Alt text for image](https://github.com/jtmtran/Employee_Attrition_Project/blob/ab4a49ad895f67190540f3365074df58c6931282/Sales%20Department%3A%20High%20Income%2C%20Yet%20High%20Attrition.png)
+<img width="550" alt="Screenshot 2024-12-14 at 12 07 11 AM" src="https://github.com/user-attachments/assets/6cbe41f3-7caf-443c-ae65-8494e29763eb" />
+
+Observation:
+- Staten Island dominates the clusters with high concentrations of poor health trees, including one cluster at 40.517, -74.208 where 100% of trees are in poor health.
+- Clusters in Queens (e.g., 40.707, -73.915) and the Bronx (40.856, -73.879) have notable poor health percentages (46%-61%), indicating areas that may need intervention.
+- Staten Island has multiple clusters with poor health percentages above 50%, suggesting broader maintenance challenges in this borough.
+- Clusters with the highest percentages of poor health trees, especially in Staten Island, should be prioritized for tree care and maintenance.
 
 <br>**6. Species in Distress: Identifying the Struggling Few**
-<br>•	Attrition rate in HR is 45.45% for employees with job satisfaction = 1, despite reasonable income levels.
+<br>Identify species with more than 10,000 records and calculate the proportion of trees in “Poor” health.
 ```sql
-
+with species_count as(
+	select
+		spc_common,
+        count(*) over(partition by spc_common) as tree_count,
+        sum(case when health = 'Poor' then 1 else 0 end) over(partition by spc_common) as poor_health_count,
+        (sum(case when health = 'Poor' then 1 else 0 end) over(partition by spc_common) * 100/count(*) over(partition by spc_common)) as poor_health_pct
+	from trees)
+    
+select distinct
+	spc_common,
+    tree_count,
+    poor_health_count,
+    poor_health_pct
+from species_count
+where tree_count > 10000
+order by poor_health_pct desc;
 ```
-![Alt text for image](https://github.com/jtmtran/Employee_Attrition_Project/blob/ab4a49ad895f67190540f3365074df58c6931282/Sales%20Department%3A%20High%20Income%2C%20Yet%20High%20Attrition.png)
+<img width="550" alt="Screenshot 2024-12-14 at 12 07 11 AM" src="https://github.com/user-attachments/assets/ad39a9af-74a4-411d-bc4c-925a2bac554b" />
+
+Observation:
+- Norway Maple Struggles the Most: With an 11.05% poor health rate, Norway maple has the highest proportion of trees in poor health among all species, indicating potential vulnerability or stress factors.
+- Littleleaf Linden and American Linden: Both species also show relatively high poor health percentages at 5.78% and 5.48%, respectively, suggesting they may require closer monitoring.
+- Honeylocust is the Most Resilient: Honeylocust has the lowest poor health percentage at 1.85%, indicating strong resilience or better care.
+- London Planetree and Pin Oak Perform Well: Despite high tree counts, these species maintain low poor health percentages at 2.52% and 2.32%, reflecting their relative hardiness.
 
 <br>**7.  Fixing the Roots: Do Resolved Problems Lead to Healthier Trees?**
 <br>•	Comparing tree health for those with resolved (root_stone = 'No' AND root_grate = 'No') vs persistent root problems.
@@ -144,13 +242,13 @@ from trees
 group by problems
 order by avg_health;
 ```
-
 <img width="350" alt="Screenshot 2024-12-12 at 6 30 22 PM" src="https://github.com/user-attachments/assets/20289b1f-eca3-4db7-9d13-0ab32da34467" />
 
+Observation:
 - Unexpected Results:
 Trees with persistent root problems seem to have a higher average health score than those with resolved root problems. This is counterintuitive since resolving root problems is expected to improve tree health.
 
-- Potential Explanations:
+- Potential Causes:
    
 	1. Data Quality Issues:
 There might be inconsistencies in how health and root problem data were recorded.
