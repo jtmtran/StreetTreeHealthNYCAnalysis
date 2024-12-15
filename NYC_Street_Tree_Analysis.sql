@@ -152,11 +152,6 @@ select distinct bbl
 from trees
 where bbl regexp '[^0-9.]';
 
--- Check non-numeric values in a numeric column
-SELECT DISTINCT column_name 
-FROM trees
-WHERE column_name REGEXP '[^0-9.]';
-
 -- Check invalid dates in a date column
 SELECT DISTINCT create_at 
 FROM trees
@@ -272,10 +267,8 @@ where create_at is not null and create_at != '';
 alter table trees
 modify column create_at date;
 
-/*
 -- Dectecting and Handling outliers
 describe table trees;
-*/
 
 -- Count unique species of trees
 select spc_latin,
@@ -347,26 +340,6 @@ group by t.spc_common, t.health
 order by t.spc_common, t.health;
 
 -- Neighborhoods have the highest and lowest percentage of trees that are classified as "Poor" in condition
-/*
--- Using subquery
--- Highest percentage
-select nta_name, poor_health_pct
-from(
-	select nta_name,
-	(sum(case when health = "Poor" then 1 else 0 end)/count(*)) * 100 as poor_health_pct
-	from trees
-    group by nta_name) subquery
-order by poor_health_pct desc limit 1;
-
--- Lowest percentage
-select nta_name, poor_health_pct
-from (select nta_name,
-		(sum(case when health = 'poor' then 1 else 0 end)/count(*)) * 100 as poor_health_pct
-		from trees
-        group by nta_name) subquery
-order by poor_health_pct limit 1;
-*/
--- Using window function and cte
 with neighborhood_health as(
 select nta_name,
 	(sum(case when health = 'Poor' then 1 else 0 end)/count(*)) * 100 as poor_health_pct
@@ -754,3 +727,4 @@ from trees
 group by problems
 order by avg_health;
 
+select count(tree_id) from trees;
