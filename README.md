@@ -43,6 +43,14 @@ The analysis leverages the 2015 NYC Street Tree Census dataset, provided by the 
 - **Tableau**: Visualization of spatial patterns and insights.
 - **Geospatial Analysis**: Clustering of trees in poor health based on latitude and longitude.
 
+### Data Preparation Notes
+**Handling Null Values in Tree Health:**
+- According to the dataset dictionary: “The Health field is left blank if the tree is dead or a stump.”
+- To align with this definition and ensure consistency, null values in the Health field were replaced with 'Dead'.
+- Transformation Applied:
+  	- A calculated field was created in SQL and Tableau (or during preprocessing) with the following logic:
+  	- IF ISNULL([Health]) THEN 'Dead' ELSE [Health] END
+
 ### Key Insights
 - Trees with persistent root problems are slightly healthier on average than those with resolved issues, suggesting confounding factors.
 - Trees on curbs are more prone to root-related problems compared to those offset from curbs.
