@@ -324,9 +324,9 @@ Other factors not accounted for in this query (e.g., soil quality, species, main
 <br>Boroughs like Brooklyn and Bronx show the highest percentages of trees adjacent to damaged sidewalks (32.97% and 27.53%, respectively). Addressing sidewalk infrastructure could improve tree health in these areas.
 
 ### Visualizations
-![Tree Health by Guard Type](path/to/image.png)
+[Tableau Link](https://public.tableau.com/views/TreesAnalysis_17342436693260/NYCTreeDashboard?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)
 
-![Clusters of Poor Health Trees](path/to/map_visualization.png)
+![NYC Tree Dashboard](https://github.com/user-attachments/assets/77b5411e-c8ae-446b-b09f-a8c820824ec6)
 
 ### Contact
 - **Name**: Jennie Tran
