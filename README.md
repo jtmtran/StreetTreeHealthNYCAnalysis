@@ -5,7 +5,7 @@ Dataset Source:
 ## Introduction
 <br>**Overview**
 
-This repository contains a comprehensive analysis of the 2015 NYC Street Tree Census dataset, focusing on the health and conditions of urban trees in New York City. The primary goal of this project is to derive actionable insights into factors influencing tree health, such as root problems, curb locations, and stewardship activities, while identifying spatial clusters of trees requiring attention.
+This repository contains a comprehensive analysis of the 2015 NYC Street Tree Census dataset which is constantly updated, focusing on the health and conditions of urban trees in New York City. The primary goal of this project is to derive actionable insights into factors influencing tree health, such as root problems, curb locations, and stewardship activities, while identifying spatial clusters of trees requiring attention.
 
 **Purpose**
 
