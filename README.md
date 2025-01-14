@@ -1,13 +1,9 @@
-# StreetTreeHealthNYCAnalysis
-![mtnyc-header](https://github.com/user-attachments/assets/043a3e1e-accc-45b3-a1a4-1bfd89be80f5)
+# Street Tree Health NYC Analysis
+![long_meadow_summer_beauty](https://github.com/user-attachments/assets/19eea29e-b0b1-4d05-832b-6ad48d250955)
 
-Dataset Source:
-[NYC Open Data](https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/uvpi-gqnh/about_data)
+## Overview
 
-## Introduction
-<br>**Overview**
-
-This repository contains a comprehensive analysis of the 2015 NYC Street Tree Census dataset which is constantly updated, focusing on the health and conditions of urban trees in New York City. The primary goal of this project is to derive actionable insights into factors influencing tree health, such as root problems, curb locations, and stewardship activities, while identifying spatial clusters of trees requiring attention.
+This repository contains a comprehensive analysis of the 2015 NYC Street Tree Census dataset which is constantly updated, focusing on the health and conditions of urban trees in New York City. The goal for this project is to identify factors affecting tree health and provide insights for urban forestry management.
 
 **Purpose**
 
@@ -16,45 +12,36 @@ Urban trees play a critical role in improving air quality, reducing urban heat, 
 - Identifying potential clusters of trees in poor health using spatial data.
 - Evaluating the effectiveness of tree stewardship and maintenance efforts.
 
-**Dataset**
+## Key Insights
+- Species Health Distribution: Certain species exhibit higher proportions of poor health, indicating a need for targeted interventions.
+- Sidewalk Damage Correlation: Trees adjacent to damaged sidewalks show a higher incidence of health issues.
+- Stewardship Impact: Active stewardship correlates with improved tree health, emphasizing the importance of community involvement.
 
-The analysis leverages the 2015 NYC Street Tree Census dataset, provided by the NYC Parks Department. This dataset includes detailed information on:
-- Tree species, size, and health conditions.
-- Environmental factors, such as root problems and sidewalk damage.
-- Geographic data, including latitude and longitude.
+## Interactive Dashboard
 
-**Key Questions Addressed**
-1. What is the distribution of tree health (Good, Fair, Poor) across the top 5 most common tree species (spc_common)?
+Explore the visualized insights through the Tableau dashboard: [Interactive Dashboard](https://public.tableau.com/views/TreesAnalysis_17342436693260/NYCTreeDashboard?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)
 
-2. Top Neighborhoods for Tree Health by Borough
+![NYC Tree Dashboard](https://github.com/user-attachments/assets/77b5411e-c8ae-446b-b09f-a8c820824ec6)
 
-3. How many trees in each borough are adjacent to damaged sidewalks, and what percentage of total trees does this represent?
+## Project Workflow
 
-4. Compare the health of trees (Good, Fair, Poor) based on their curb location (OnCurb vs OffsetFromCurb).
+1. Data Overview
+- Dataset: 2015 NYC Street Tree Census.
+- Structure: Includes variables such as species, health status, stewardship levels, and geographic location.
+- Goal: Analyze tree health across NYC and identify influencing factors.
 
-5. Analyze the impact of stewardship activity (steward) on tree health. Calculate the percentage of trees in “Good” health for each level of stewardship activity.
+2. SQL Analysis
+- Data Preparation Notes
+  - Handling Null Values in Tree Health:
+    - According to the dataset dictionary: “The Health field is left blank if the tree is dead or a stump.”
+    - To align with this definition and ensure consistency, null values in the Health field were replaced with 'Dead'.
+    - Transformation Applied:
+      - A calculated field was created in SQL and Tableau with the following logic:
+      - IF ISNULL([Health]) THEN 'Dead' ELSE [Health] END
+     
+- SQL was utilized for data cleaning and analysis. Key queries include:
 
-6. Mapping the Hotspots: Where Are Poor Health Trees Concentrated?
-
-7. For species with more than 10,000 records, calculate the proportion of trees in “Poor” health and identify the species with the highest proportion.
-
-8. Are trees with resolved root problems (root_stone = 'No' and root_grate = 'No') more likely to be in “Good” health compared to those with persistent root problems?
-
-## Methods and Tools
-- **SQL**: Data extraction and initial analysis.
-- **Tableau**: Visualization of spatial patterns and insights.
-- **Geospatial Analysis**: Clustering of trees in poor health based on latitude and longitude.
-
-## Data Preparation Notes
-**Handling Null Values in Tree Health:**
-- According to the dataset dictionary: “The Health field is left blank if the tree is dead or a stump.”
-- To align with this definition and ensure consistency, null values in the Health field were replaced with 'Dead'.
-- Transformation Applied:
-  	- A calculated field was created in SQL and Tableau with the following logic:
-  	- IF ISNULL([Health]) THEN 'Dead' ELSE [Health] END
-
-## Root Causes: What Makes Urban Trees Thrive or Fail in New York City?
-<br>**1. Which Tree Species Are Thriving in NYC?**
+**- Which Tree Species Are Thriving in NYC?**
 <br>Investigate the distribution of tree health (Good, Fair, Poor) among the top 5 most common tree species (spc_common)
 ```sql
 with top_species as(
@@ -84,7 +71,7 @@ Observation:
 - A small percentage of trees across all species fall under “Fair” health, indicating some urban stressors but manageable conditions.
 - Honeylocust stands out with only 1 “Dead” tree, highlighting its resilience or exceptional care.
 
-<br>**2. Top Neighborhoods for Tree Health by Borough**
+**- Top Neighborhoods for Tree Health by Borough**
 <br> Rank neighborhoods (nta_name) within each borough by the percentage of trees classified as “Good” in health.
 ```sql
 with good_health_pct as(
@@ -121,7 +108,7 @@ Observation:
 - Manhattan shows more variability, with top scores ranging from 90.15% (Hudson Yards) to 77.34% (Battery Park City), highlighting areas for improvement.
 - The Bronx’s top neighborhoods have slightly lower “Good” health percentages compared to other boroughs, with its leader at 86.18%.
 
-<br>**3. Damaged Sidewalks: A Hidden Threat to NYC Trees**
+**- Damaged Sidewalks: A Hidden Threat to NYC Trees**
 <br>Examine how many trees in each borough are adjacent to damaged sidewalks and calculate the percentage of total trees.
 ```sql
 select 
@@ -141,7 +128,7 @@ Observation:
 - Queens has the highest number of total trees (250,551) but a lower sidewalk damage percentage (26.73%) compared to Brooklyn. Despite having a higher tree count, Queens manages to maintain a moderate level of sidewalk damage.
 - The Bronx has a relatively high percentage of damaged sidewalks (27.53%), suggesting a need for targeted maintenance efforts in this borough.
 
-<br>**4. On the Edge: Are Curb Trees More Vulnerable?**
+**- On the Edge: Are Curb Trees More Vulnerable?**
 <br>Compare the health of trees (Good, Fair, Poor) based on curb location (OnCurb vs OffsetFromCurb).
 ```sql
 with tree_health as(
@@ -175,7 +162,7 @@ Observation:
 - Poor Health Slightly Higher OnCurb: “Poor” health trees are marginally more prevalent on curbs (3.94%) than offset (3.58%).
 - Fair Health Balanced: Trees offset from the curb show a slightly higher “Fair” health percentage (15%) compared to on-curb trees (14.08%).
 
-<br>**5. Stewardship’s Role in Tree Survival**
+**- Stewardship’s Role in Tree Survival**
 <br>Analyze the impact of stewardship activity (steward) on tree health by calculating the percentage of trees in “Good” health for each level.
 ```sql
 select
@@ -194,7 +181,7 @@ Observation:
 - Minimal Stewardship (1or2): Trees with minimal stewardship (1or2) show a slight dip in “Good” health at 80.37%, indicating lower care impacts health slightly.
 - Dead Stewardship Category: The Dead category has 0 trees in “Good” health, as expected.
 
-<br>**6. Mapping the Hotspots: Where Are Poor Health Trees Concentrated?**
+**- Mapping the Hotspots: Where Are Poor Health Trees Concentrated?**
 <br>Use latitude (latitude) and longitude (longitude) data to compare poor health trees to the total number of trees in each cluster
 ```sql
 with cluster_summary as (
@@ -226,7 +213,7 @@ Observation:
 - Staten Island has multiple clusters with poor health percentages above 50%, suggesting broader maintenance challenges in this borough.
 - Clusters with the highest percentages of poor health trees, especially in Staten Island, should be prioritized for tree care and maintenance.
 
-<br>**7. Species in Distress: Identifying the Struggling Few**
+**- Species in Distress: Identifying the Struggling Few**
 <br>Identify species with more than 10,000 records and calculate the proportion of trees in “Poor” health.
 ```sql
 with species_count as(
@@ -254,7 +241,7 @@ Observation:
 - Honeylocust is the Most Resilient: Honeylocust has the lowest poor health percentage at 1.85%, indicating strong resilience or better care.
 - London Planetree and Pin Oak Perform Well: Despite high tree counts, these species maintain low poor health percentages at 2.52% and 2.32%, reflecting their relative hardiness.
 
-<br>**8.  Fixing the Roots: Do Resolved Problems Lead to Healthier Trees?**
+**- Fixing the Roots: Do Resolved Problems Lead to Healthier Trees?**
 <br>Comparing tree health for those with resolved (root_stone = 'No' AND root_grate = 'No') vs persistent root problems.
 ```sql
 select 
@@ -291,40 +278,39 @@ Observation:
 - Unexpected Results:
 Trees with persistent root problems seem to have a higher average health score than those with resolved root problems. This is counterintuitive since resolving root problems is expected to improve tree health.
 
-- Potential Causes:
-   
-	1. Data Quality Issues:
-There might be inconsistencies in how health and root problem data were recorded.
-For instance, trees marked as having “No” root problems might have been recently resolved but still exhibit lingering health issues.
+3. Tableau Visualizations
 
-	2. Selection Bias:
-The dataset might have a disproportionately large number of trees classified as “Resolved” but still recovering from past issues, lowering their average health score.
+    Tree Health by Species:
 
-	3. Confounding Factors:
-Other factors not accounted for in this query (e.g., soil quality, species, maintenance level) might be affecting tree health independently of root problems.
+<img width="395" alt="Screenshot 2025-01-14 at 12 00 03 AM" src="https://github.com/user-attachments/assets/e3764611-bdcc-400d-b7e6-bb2532963ff8" />
+  
+- Insights:
+	- London Planetree has the highest proportion of trees in “Good” health (24.64%), but it also accounts for the highest number of trees in “Poor” health (0.74%) due to its large population.
+	- Norway Maple exhibits a slightly higher proportion of “Poor” health trees (1.27%) compared to other species, indicating it might require additional attention.
+ 	- Overall, the majority of trees across species are in “Good” health, though stewardship efforts may be needed for less healthy species.
 
-### Key Takeaways and Recommendations
-1. Species-Specific Vulnerabilities:
-<br>Certain species like Norway maple exhibit significantly higher poor health percentages (11.05%), making them a priority for targeted interventions. In contrast, resilient species like Honeylocust show lower rates (1.85%) of poor health, indicating their suitability for urban environments.
 
-2. Impact of Curb Location:
-<br>Trees on curbs face slightly higher challenges, with marginally higher mortality (4.66% Dead) and poor health (3.94% Poor) compared to those offset from curbs. This highlights the additional stress faced by trees closer to sidewalks and streets.
+	Impact of Sidewalk Conditions: Comparative analysis of tree health adjacent to damaged vs. undamaged sidewalks.
+<img width="1371" alt="Screenshot 2025-01-14 at 12 00 47 AM" src="https://github.com/user-attachments/assets/1dbbf7f3-e14f-4ad0-807b-f35dd0582777" />
 
-3. Stewardship Effectiveness:
-<br>Higher stewardship levels correlate strongly with better tree health. Trees with 4 or more stewardship activities have the highest “Good” health percentage (84.53%), demonstrating the value of active community engagement and care.
+- Insights:
+	- Queens and Brooklyn have the highest number of trees adjacent to damaged sidewalks, with 24.67% and 15.85%, respectively, in poor condition.
+	- In Manhattan, only 7.20% of trees are adjacent to damaged sidewalks, but it has the smallest population of trees overall.
 
-4. Spatial Clusters of Poor Health:
-<br>Staten Island emerges as a key area of concern, with multiple high-density clusters of poor health trees, some with over 50% poor health rates. These clusters call for prioritized resource allocation and maintenance efforts.
 
-5. Sidewalk Damage and Tree Health:
-<br>Boroughs like Brooklyn and Bronx show the highest percentages of trees adjacent to damaged sidewalks (32.97% and 27.53%, respectively). Addressing sidewalk infrastructure could improve tree health in these areas.
+	Stewardship Levels and Tree Health: Visualization showing the correlation between stewardship activity and tree health.
+<img width="317" alt="Screenshot 2025-01-14 at 12 01 08 AM" src="https://github.com/user-attachments/assets/6dff2a7d-51b7-41cb-8287-b9c6df27dd87" />
 
-### Visualizations
-[Tableau Link](https://public.tableau.com/views/TreesAnalysis_17342436693260/NYCTreeDashboard?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)
+- Insights:
+	- Trees with no stewardship have a higher percentage of “Poor” health (2.75%) and “Fair” health (11.49%) compared to those receiving care.
+	- As stewardship increases (e.g., “1or2” or “4orMore”), the proportion of trees in “Good” health rises significantly.
 
-![NYC Tree Dashboard](https://github.com/user-attachments/assets/77b5411e-c8ae-446b-b09f-a8c820824ec6)
-
-### Contact
+Repository Structure
+- SQL Queries: Located in NYC_Street_Tree_Analysis.sql, containing scripts used for data analysis.
+- Data Dictionary: StreetTreeCensus2015TreesDataDictionary20161102.pdf provides detailed information about dataset variables.
+- Visualizations: Stored in the visualizations folder, showcasing key findings.
+ 
+## Contact
 - **Name**: Jennie Tran
 - **Email**: jennie.tmtran@gmail.com
 - **LinkedIn**: [jennietmtran](www.linkedin.com/in/jennietmtran)
