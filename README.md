@@ -305,7 +305,7 @@ Trees with persistent root problems seem to have a higher average health score t
 	- Trees with no stewardship have a higher percentage of “Poor” health (2.75%) and “Fair” health (11.49%) compared to those receiving care.
 	- As stewardship increases (e.g., “1or2” or “4orMore”), the proportion of trees in “Good” health rises significantly.
 
-Repository Structure
+## Repository Structure
 - SQL Queries: Located in NYC_Street_Tree_Analysis.sql, containing scripts used for data analysis.
 - Data Dictionary: StreetTreeCensus2015TreesDataDictionary20161102.pdf provides detailed information about dataset variables.
 - Visualizations: Stored in the visualizations folder, showcasing key findings.
